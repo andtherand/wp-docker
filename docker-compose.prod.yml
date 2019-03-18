@@ -30,8 +30,6 @@ services:
     command: /app/start.sh
     env_file:
       - .env
-    volumes:
-      - ./composer.local.json:/app/composer.local.json:ro
     depends_on:
       - db
     # <START DELETING FROM HERE>
