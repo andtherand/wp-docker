@@ -18,6 +18,9 @@ composer update -n
 ```
 Mehr Information gibt es auf der offiziellen (Composer-Seite)[https://getcomposer.org/doc/]
 
+Wordpress verwendet eine eigenes Repository für die Themes und Plugins.
+Dieses könnt ihr unter https://wpackagist.org/ finden.
+
 ## Struktur
 
 Die Struktur im laufenden Betrieb sieht wie folgt aus:
@@ -98,8 +101,9 @@ COMPOSER_ALLOW_SUPERUSER=1 # Hiermit schaltet man die Composer-Benachrichtigung 
 1. Kopier die `.env-example` Datei und benenne als `.env`.
 2. Setzte deine gewünschten Umgebungsvariablen in dieser Datei.
 3. Mach ggf. Anpassung an der `docker-compose.yml`.
-4. `docker-compose up`
-5. Warten.
-6. ???
-7. https://DEIN-ERSTES-WORDPRESS.localhost
+4. Pakete in der `composer.local.json`hinzufügen. Pakete sind hier zufinden: https://wpackagist.org/
+5. `docker-compose up`
+6. Warten.
+7. ???
+8. https://DEIN-ERSTES-WORDPRESS.localhost
 
