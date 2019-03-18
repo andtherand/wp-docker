@@ -1,13 +1,7 @@
 ## PROJECT specifics
 
-content/
-public/content/*
-content/themes/*
-content/plugins/*
-
-vendor
+app/
 data/db
-secrets.php
 
 # the following files are part of the docker image and are already added to the index
 /.env

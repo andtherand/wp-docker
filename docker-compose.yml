@@ -8,6 +8,7 @@ networks:
 
 volumes:
   wp-data: ~
+  composer-cache: ~
 
 services:
   db:
@@ -28,11 +29,12 @@ services:
       context: data/docker/wordpress
     image: tp-wordpress:1.0
     container_name: tpblog_wp
+    entrypoint: bash -c '/app/build.sh && /app/start.sh'
     env_file:
       - .env
     volumes:
-      - ./content:/var/www/html/wp-content
-      - wp-data:/var/www/html
+      - composer-cache:/root/.composer
+      - ./app:/app/wp:cached
     depends_on:
       - db
     labels:
@@ -45,35 +47,6 @@ services:
     networks:
       - blog_tp_backend
       - traefik
-
-  # helper container!
-  # this one is allowed to exit after it's done
-  composer:
-    build:
-      context: data/docker/composer
-    image: wp-composer:1.0
-    container_name: tpblog_composer
-    command: composer install -n
-    volumes:
-      - .:/app
-
-  # helper container!
-  # this one is allowed to exit after it's done
-  wp_cli:
-    build:
-      context: data/docker/wp-cli
-    container_name: tpblog__wp_cli
-    image: wp-cli:1.0
-    entrypoint: /app/start.sh
-    depends_on:
-      - db
-      - wp
-    env_file:
-      - .env
-    volumes:
-      - wp-data:/var/www/html
-    networks:
-      - blog_tp_backend
 
   # webpack:
   #   build:
