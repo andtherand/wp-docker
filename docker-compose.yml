@@ -4,10 +4,9 @@ networks:
   traefik:
     external:
       name: traefik
-  blog_tp_backend: ~
+  your_wp_backend: ~
 
 volumes:
-  wp-data: ~
   composer-cache: ~
 
 services:
@@ -16,36 +15,41 @@ services:
     container_name: tpblog_db
     volumes:
       - ./data/db:/var/lib/mysql/
+      # mounts an initial mysql state
+      # https://hub.docker.com/_/mysql section: Initializing a fresh instance
       - ./data/mysql_init:/docker-entrypoint-initdb.d
     env_file:
       - .env
     ports:
       - "3306:3306"
     networks:
-      - blog_tp_backend
+      - your_wp_backend
 
   wp:
     build:
       context: data/docker/wordpress
-    image: tp-wordpress:1.0
-    container_name: tpblog_wp
+    image: your-wordpress:1.0 # change accordingly to project name
+    container_name: your_wp
     entrypoint: bash -c '/app/build.sh && /app/start.sh'
     env_file:
       - .env
     volumes:
       - composer-cache:/root/.composer
       - ./app:/app/wp:cached
+      - ./composer.local.json:/app/composer.local.json:ro
+      # - ./theme:/app/wp/wp-content/theme/my-theme-name # create folder on host and put stuff in there
+      # - ./plugin:/app/wp/wp-content/plugin/my-plugin # create folder on host and put stuff in there
     depends_on:
       - db
     labels:
       - "traefik.enable=true"
-      - "traefik.frontend.rule=Host:blog.talentplatforms.localhost"
+      - "traefik.frontend.rule=Host:your.wp.localhost"
       - "traefik.port=80"
       - "traefik.docker.network=traefik"
-      - "traefik.backend=blog_tp"
+      - "traefik.backend=your_wp"
       - "traefik.frontend.entryPoints=http,https"
     networks:
-      - blog_tp_backend
+      - your_wp_backend
       - traefik
 
   # webpack:
@@ -56,6 +60,6 @@ services:
   #     - wp
   #   restart: always
   #   # volumes:
-  #     # - ./data/tpde-theme:/home/node/app
+  #     # - ./theme:/home/node/app
   #   environment:
   #     NODE_ENV: development

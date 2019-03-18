@@ -122,10 +122,5 @@ $RECYCLE.BIN/
 *.lnk
 
 gitlab-prv-key
-data/tpde-plugin
-data/tpde-theme
 
 # End of https://www.gitignore.io/api/osx,windows,phpstorm
-
-# DB
-data/mysql_init
