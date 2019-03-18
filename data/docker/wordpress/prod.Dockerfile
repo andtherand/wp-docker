@@ -1,3 +1,5 @@
+ARG WORDPRESS_ENV=production
+
 FROM php:7.3-apache as base
 
 ENV CORE_PACKAGES="zip libzip-dev unzip curl libmagickwand-dev git" \
@@ -35,7 +37,11 @@ RUN echo '----> Creating secrets' \
 
 WORKDIR ${APP_HOME}
 
-COPY /files/apache/vhost.conf /etc/apache2/sites-available/000-default.conf
-COPY /files/app ${APP_HOME}/
+COPY data/docker/wordpress/files/apache/vhost.conf /etc/apache2/sites-available/000-default.conf
 
-RUN chmod +x ${APP_HOME}/start.sh ${APP_HOME}/build.sh
+COPY data/docker/wordpress/files/app ${APP_HOME}/
+# adds the local changes to the production image
+COPY composer.local.json ${APP_HOME}/
+
+RUN chmod +x ${APP_HOME}/start.sh ${APP_HOME}/build.sh \
+  && ${APP_HOME}/build.sh

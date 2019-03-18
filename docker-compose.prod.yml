@@ -1,0 +1,48 @@
+version: '3.7'
+
+networks:
+  # <START DELETING FROM HERE>
+  # traefik networks needs to be removed!
+  traefik:
+    external:
+      name: traefik
+  # </END DELETING :)>
+  your_wp_backend: ~
+
+services:
+  db:
+    image: mysql:5.7
+    container_name: tpblog_db
+    volumes:
+      - ./data/db:/var/lib/mysql/
+      - ./data/mysql_init:/docker-entrypoint-initdb.d
+    env_file:
+      - .env
+    networks:
+      - your_wp_backend
+
+  wp:
+    build:
+      dockerfile: data/docker/wordpress/prod.Dockerfile
+      context: .
+    image: your-wordpress:prod-1.0 # change accordingly to project name
+    container_name: your_wp_prod
+    command: /app/start.sh
+    env_file:
+      - .env
+    volumes:
+      - ./composer.local.json:/app/composer.local.json:ro
+    depends_on:
+      - db
+    # <START DELETING FROM HERE>
+    labels:
+      - "traefik.enable=true"
+      - "traefik.frontend.rule=Host:your.wp.localhost"
+      - "traefik.port=80"
+      - "traefik.docker.network=traefik"
+      - "traefik.backend=your_wp"
+      - "traefik.frontend.entryPoints=http,https"
+    # </END DELETING :)>
+    networks:
+      - your_wp_backend
+      - traefik # remove this aswell

@@ -91,9 +91,18 @@ WORDPRESS_ADMIN_EMAIL=admin@example.com # Mail-Adresse des Admins
 WORDPRESS_TITLE=Mein erstes Wordpress :) # Der Titel der Wordpress-Seite
 WORDPRESS_THEME=twentynineteen # Das Theme welches aktiviert werden soll, bspw. tpde-blog
 WORDPRESS_LANG=de_DE # Die Sprache in der Wordpress zur Verfügung stehen soll
+```
 
-# silences root user warning, do not change!
-COMPOSER_ALLOW_SUPERUSER=1 # Hiermit schaltet man die Composer-Benachrichtigung aus, dass wir composer als Root ausführen. DO NOT CHANGE!
+### Best Practices
+
+Die Werte der Datenbank Variablen sollten in der Regel wie folgt aussehen:
+Projektname: blog.talentplatforms.de
+Short: blogtpde
+
+```
+MYSQL_DATABASE=blogtpde_db
+MYSQL_USER=blogtpde_user
+WORDPRESS_TABLE_PREFIX=blogtpde_
 ```
 
 ## Setup
@@ -107,3 +116,10 @@ COMPOSER_ALLOW_SUPERUSER=1 # Hiermit schaltet man die Composer-Benachrichtigung 
 7. ???
 8. https://DEIN-ERSTES-WORDPRESS.localhost
 
+
+## Production
+
+Um das ganze Projekt in einer Produktionsumgebung verwenden zu können,
+führe einfach folgenden Befehl aus:
+
+`docker-composer -f docker-compose.prod.yml up`

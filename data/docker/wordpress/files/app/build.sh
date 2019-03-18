@@ -1,6 +1,11 @@
 #!/bin/bash
 
-set -exou pipefail
+set -eo pipefail
+
+export COMPOSER_ALLOW_SUPERUSER=1
+
+# sets sensible defaults
+WP_ENV="${WORDPRESS_ENV:-production}"
 
 echo '-----------------------------------'
 echo '--> Hi from Wordpress build script'
@@ -13,7 +18,7 @@ if [ -f ${APP_HOME}/.firstrun ]; then
   if [ -f ${APP_HOME}/composer.json ]; then
     # install dependencies
     echo '----> Installing Wordpress and dependencies'
-    if [ $WORDPRESS_ENV = "development" ]; then
+    if [ ${WP_ENV} = "development" ]; then
       composer install -n
     else
       composer install -n --no-dev

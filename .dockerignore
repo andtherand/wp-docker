@@ -1,0 +1,14 @@
+# Folders
+.git
+/app
+data/db
+data/mysql_init
+data/docker/webpack
+
+# Files
+.env-example
+.gitignore
+*.DS_Store
+.AppleDouble
+.LSOverride
+readme.md
