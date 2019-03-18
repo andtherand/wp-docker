@@ -1,0 +1,92 @@
+{
+  "name": "talentplatforms/wordpress-base",
+  "description": "install wordpress via composer",
+  "authors": [
+    {
+      "name": "Andy Ruck",
+      "email": "ruck.andreas@territory.de"
+    }
+  ],
+  "repositories": [
+    {
+      "type": "composer",
+      "url": "https://wpackagist.org"
+    },
+    {
+      "type": "composer",
+      "url": "https://wp-languages.github.io"
+    },
+    {
+      "type": "package",
+      "package": {
+        "name": "andtherand/svs-security",
+        "version": "1.1",
+        "type": "wordpress-plugin",
+        "source": {
+          "url": "https://github.com/andtherand/svs-security",
+          "type": "git",
+          "reference": "master"
+        }
+      }
+    }
+  ],
+  "config": {
+    "dropin-installer": "copy",
+    "preferred-install": "dist",
+    "gitlab-token": {
+        "gitlab.com": "JRjUmdGwnmGycVpzb3EB"
+    }
+  },
+  "require": {
+    "wikimedia/composer-merge-plugin": "*@dev",
+    "johnpbloch/wordpress": "~5.1.1",
+    "koodimonni-language/core-de_de": "*",
+    "koodimonni-language/de_de": "*",
+    "wpackagist-plugin/wp-permalauts": "~1.0.2",
+    "andtherand/svs-security": "*"
+  },
+
+  "require-dev": {
+    "koodimonni/composer-dropin-installer": "*",
+    "wpackagist-plugin/wp-migrate-db": "~1.0.8",
+    "wpackagist-plugin/debug-bar": "~1.0",
+    "wpackagist-plugin/developer": "*",
+    "wpackagist-plugin/debug-bar-console": "*"
+  },
+
+  "extra": {
+    "wordpress-install-dir": "/app/wp",
+    "merge-plugin": {
+      "include": [
+          "composer.local.json"
+      ]
+    },
+
+    "installer-paths": {
+      "wp/wp-content/mu-plugins/{$name}": [
+        "type:wordpress-muplugin",
+        "andtherand/svs-security",
+        "wpackagist-plugin/wp-permalauts"
+      ],
+
+      "wp/wp-content/plugins/{$name}": [
+        "type:wordpress-plugin"
+      ],
+      "wp/wp-content/themes/{$name}": [
+        "type:wordpress-theme"
+      ]
+    },
+
+    "dropin-paths": {
+      "wp/wp-content/languages/plugins/": [
+        "vendor:koodimonni-plugin-language"
+      ],
+      "wp/wp-content/languages/themes/": [
+        "vendor:koodimonni-theme-language"
+      ],
+      "wp/wp-content/languages/": [
+        "vendor:koodimonni-language"
+      ]
+    }
+  }
+}

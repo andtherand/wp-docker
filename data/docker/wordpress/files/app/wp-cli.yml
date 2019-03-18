@@ -1,0 +1,5 @@
+path: /app/wp
+color: 1
+
+apache_modules:
+  - mod_rewrite
