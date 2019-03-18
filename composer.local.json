@@ -1,0 +1,59 @@
+{
+  "name": "talentplatforms/wp-base",
+  "description": "install wordpress via composer",
+  "authors": [
+    {
+      "name": "Andy Ruck",
+      "email": "ruck.andreas@territory.de"
+    },
+    {
+      "name": "Max Bause",
+      "email": "bause.max@territory.de"
+    }
+  ],
+  "repositories": [
+    {
+      "type": "composer",
+      "url": "https://wpackagist.org"
+    },
+    {
+      "type": "package",
+      "package": {
+        "name": "talentplatforms/tpde-blog",
+        "version": "1.3",
+        "type": "wordpress-theme",
+        "source": {
+          "url": "https://gitlab.com/talentplatforms/blogs/tpde-blog-theme",
+          "type": "git",
+          "reference": "develop"
+        }
+      }
+    }
+  ],
+  "config": {
+    "dropin-installer": "copy",
+    "preferred-install": "dist",
+    "gitlab-token": {
+        "gitlab.com": "JRjUmdGwnmGycVpzb3EB"
+    }
+  },
+  "require": {
+    "talentplatforms/tpde-blog": "*"
+  },
+
+  "extra": {
+    "wordpress-install-dir": "/app/wp",
+    "installer-paths": {
+      "wp/wp-content/mu-plugins/{$name}": [
+        "type:wordpress-muplugin"
+      ],
+
+      "wp/wp-content/plugins/{$name}": [
+        "type:wordpress-plugin"
+      ],
+      "wp/wp-content/themes/{$name}": [
+        "type:wordpress-theme"
+      ]
+    }
+  }
+}

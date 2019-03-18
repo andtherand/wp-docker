@@ -1,13 +1,7 @@
 ## PROJECT specifics
 
-content/
-public/content/*
-content/themes/*
-content/plugins/*
-
-vendor
+app/
 data/db
-secrets.php
 
 # the following files are part of the docker image and are already added to the index
 /.env
@@ -128,10 +122,5 @@ $RECYCLE.BIN/
 *.lnk
 
 gitlab-prv-key
-data/tpde-plugin
-data/tpde-theme
 
 # End of https://www.gitignore.io/api/osx,windows,phpstorm
-
-# DB
-data/mysql_init
