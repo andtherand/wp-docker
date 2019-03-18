@@ -25,6 +25,7 @@ Dieses könnt ihr unter https://wpackagist.org/ finden.
 
 Die Struktur im laufenden Betrieb sieht wie folgt aus:
 
+```
 .
 ├── app
 │   └── WORDPRESS_FILES FROM MOUNT
@@ -43,6 +44,7 @@ Die Struktur im laufenden Betrieb sieht wie folgt aus:
 ├── composer.local.json
 ├── docker-compose.yml
 └── readme.md
+```
 
 Der `app` Ordner beinhaltet während des Betriebs die eigentlichen Wordpress Dateien.
 Diese leben im Kontext des Containers. Änderungen an Dateien hier sind nur von temporärer Wirkung!
