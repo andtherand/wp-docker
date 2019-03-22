@@ -1,0 +1,78 @@
+image: docker:latest
+services:
+  - docker:dind
+
+stages:
+  - build
+  - deploy
+
+variables:
+  GIT_DEPTH: 3
+
+  CI_IMAGE_BRANCH: $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
+
+  DOCKER_HOST: tcp://docker:2375/
+  DOCKER_DRIVER: overlay2
+
+before_script:
+  - echo "### login to registry"
+  - echo $CI_JOB_TOKEN | docker login -u gitlab-ci-token --password-stdin $CI_REGISTRY
+
+################################################################################
+# STAGES
+
+# -> BUILD
+
+build:ci-image:
+  stage: build
+  script:
+    - docker pull $CI_IMAGE_BRANCH || echo '¯\_(ツ)_/¯'
+    - docker build
+      --rm
+      -t $CI_IMAGE_BRANCH
+      -f prod.Dockerfile
+      .
+    - docker push $CI_IMAGE_BRANCH
+  tags:
+    - docker
+    - falcon9
+
+# -> DEPLOYMENTS
+
+deploy:
+  stage: deploy
+  image: registry.gitlab.com/talentplatforms/tools/docker-compose:1.0
+  services: []
+  variables:
+    DOCKER_HOST: unix:///var/run/docker.sock
+    DOCKER_COMPOSE_OPTS: "-f docker-compose.prod.yml"
+  environment:
+    url: https://$CI_COMMIT_REF_SLUG.talentplatforms.org
+    name: review/$CI_COMMIT_REF_NAME
+    on_stop: deploy:stop
+  script:
+    - touch .env
+    - echo "TRAEFIK_BACKEND=$CI_COMMIT_REF_SLUG-$CI_PIPELINE_IID" >> .env
+    - echo "IMAGE_NAME=$CI_REGISTRY_IMAGE" >> .env
+    - docker-compose $DOCKER_COMPOSE_OPTS config
+    - docker-compose $DOCKER_COMPOSE_OPTS up -d
+  tags:
+    - docker
+    - falcon9
+  only:
+    - branches
+  except:
+    - master
+
+deploy:stop:
+  stage: deploy
+  services: []
+  variables:
+    GIT_STRATEGY: none
+    DOCKER_HOST: unix:///var/run/docker.sock
+  script:
+    - echo "Remove review app $CI_COMMIT_REF_NAME"
+  when: manual
+  environment:
+    name: review/$CI_COMMIT_REF_NAME
+    action: stop
