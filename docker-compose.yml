@@ -34,7 +34,7 @@ services:
     env_file:
       - .env
     volumes:
-      - composer-cache:/root/.composer
+      - composer-cache:/app/.composer
       - ./app:/app/wp:cached
       - ./composer.local.json:/app/composer.local.json:ro
       # - ./theme:/app/wp/wp-content/theme/my-theme-name # create folder on host and put stuff in there

@@ -35,3 +35,9 @@ if [ -f ${APP_HOME}/wp/readme.html ]; then
   echo '----> Removing readme'
   rm ${APP_HOME}/wp/readme.html
 fi
+
+if [ ! -d "${APP_HOME}/wp/wp-content/uploads" ]; then
+  mkdir -p ${APP_HOME}/wp/wp-content/{uploads,cache}
+fi
+
+chown -R www-data:www-data ${APP_HOME}/wp
